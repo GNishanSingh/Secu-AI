@@ -11,7 +11,11 @@ import colorama
 from colorama import Fore, Style
 from rich.console import Console
 from rich.markdown import Markdown
+import whois.whois
 from SecuAI.Enricher.VirusTotal import VirusTotal
+from SecuAI.Enricher.AlienVault import AlienVaultOTX
+from SecuAI.Enricher.URLScan import URLScan
+import whois
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -19,6 +23,8 @@ colorama.init(autoreset=True)
 class CybSecuAI:
     def __init__(self) -> None:
         self.VTLookup = VirusTotal(os.getenv('VirusTotal_Token'))
+        self.AlienVault = AlienVaultOTX(os.getenv('AlienVault_OtxToken'))
+        self.URLScan = URLScan(os.getenv('urlscan_token'))
     def MistralAgent (self, data):
         MistralToken = os.getenv("MistralToken")
         MistralAgent = os.getenv("MistralAgent")
@@ -72,14 +78,23 @@ User Query: {query}
         # entities = self.extract_entities(query)
         decs = self.use_nemo_for_decision(query)
         if decs['IsAPIRequest']:
-                vtdata = []
+                data = []
                 for req in decs['APIRequest']:
                     if req['Type'] == 'VirusTotal':
                         for ioc in req['Entities']:
-                            vtdata.append(self.VTLookup.query(ioc, entity_type=req['EntityType'].lower()))
+                            data.append(self.VTLookup.query(ioc, entity_type=req['EntityType'].lower()))
+                    elif req['Type'] == 'WhoisLookup':
+                        for ioc in req['Entities']:
+                            data.append(whois.whois(ioc))
+                    elif req['Type'] == 'AlienVault':
+                        for ioc in req['Entities']:
+                            data.append(self.AlienVault.query(ioc,req['EntityType'].lower()))
+                    elif req['Type'] == 'URLScan':
+                        for ioc in req['Entities']:
+                            data.append(self.URLScan.query(ioc,req['EntityType'].lower()))
                     else:
-                        vtdata = "Lookup Not available Yet."
-                return self.format_with_nemo(vtdata, query)
+                        data = "Lookup Not available Yet."
+                return self.format_with_nemo(data, query)
         else:
             return self.MistralAgent(query)
     def spinner(self, stop_spinner):
