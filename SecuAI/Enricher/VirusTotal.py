@@ -6,11 +6,13 @@ class VirusTotal:
     def query(self, entity, entity_type):
         url = ""
         if entity_type == "hash":
-            url = f"https://www.virustotal.com/api/v3/files/{entity[0]}"
+            url = f"https://www.virustotal.com/api/v3/files/{entity}"
         elif entity_type == "url":
-            url = f"https://www.virustotal.com/api/v3/urls/{entity[0]}"
+            url = f"https://www.virustotal.com/api/v3/urls/{entity}"
         elif entity_type == "ip":
-            url = f"https://www.virustotal.com/api/v3/ip_addresses/{entity[0]}"
+            url = f"https://www.virustotal.com/api/v3/ip_addresses/{entity}"
+        elif entity_type == "domain":
+            url = f"https://www.virustotal.com/api/v3/domains/{entity}"
         headers = {
             "x-apikey": self.vt_token
         }

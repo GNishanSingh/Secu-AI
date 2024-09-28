@@ -33,38 +33,35 @@ class CybSecuAI:
             ]
         )
         return chat_response.choices[0].message.content
+    def use_nemo_for_decision(self, query):
+        prompt = f"""
+Check if User is requesting for any kind of API request. it might also contains IP, hash, domain, url, email, etc. extract what kind of API request user asking and provide answer only in following json format
+{{
+    'IsAPIRequest':true,
+    'APIRequest':[
+        {{
+        'Type':'VirusTotal',
+        'EntityType':'Hash',
+        'Entities':['ffcad40333d105366b2037ab97e22c44']
+        }}
+        ]
+}}
 
-    def extract_entities(self, query):
-        doc = query
-        entities = {
-            "ip_addresses": [],
-            "hashes": [],
-            "urls": []
-        }
-        hash_pattern =  re.findall(r"\b[0-9a-fA-F]{32,64}\b", doc)
-        if hash_pattern:
-            entities["hashes"].append(hash_pattern)
-        return entities
-    def use_nemo_for_decision(self, query, entities):
-        if entities["hashes"] or entities["urls"] or entities["ip_addresses"]:
-            prompt = f"""
-            Does the following query require a VirusTotal API request?
-
-            Query: {query}
+User Query: {query}
             
-            Answer 'yes' or 'no'.
             """
-            response = self.MistralAgent(prompt)
-            return "yes" in response.lower()
-        else:
-            return False
-    def format_with_nemo(self, data, userquery, entity_type):
+        response = self.MistralAgent(prompt)
+        try:
+               return json.loads(response.replace('```json','').replace('```','').strip())
+        except:
+                return {'IsAPIRequest': False}
+    def format_with_nemo(self, data, userquery):
         if "error" in data:
             return data["error"]
         else:
             prompt = f"""
-    User asked for virustotal data we got the data now user have query on that data. please complete user request.
-    # Virustotal Data
+    User asked for API data we got the data now user have query on that data. please complete user request.
+    # API Data
     {data}
     # Question from user
     {userquery}
@@ -72,22 +69,19 @@ class CybSecuAI:
             outputs = self.MistralAgent(prompt)
             return outputs
     def process_query(self, query):
-        entities = self.extract_entities(query)
-        if self.use_nemo_for_decision(query, entities):
-            if entities["hashes"]:
-                # Query VirusTotal with the hash
-                vt_data = self.VTLookup.query(entities["hashes"][0], entity_type="hash")
-                return self.format_with_nemo(vt_data, query, entity_type="hash")
-            
-            elif entities["urls"]:
-                vt_data = self.VTLookup.query(entities["urls"][0], entity_type="url")
-                return self.format_with_nemo(vt_data, entity_type="url")
-            
-            elif entities["ip_addresses"]:
-                vt_data = self.VTLookup.query(entities["ip_addresses"][0], entity_type="ip")
-                return self.format_with_nemo(vt_data, entity_type="ip")
+        # entities = self.extract_entities(query)
+        decs = self.use_nemo_for_decision(query)
+        if decs['IsAPIRequest']:
+                vtdata = []
+                for req in decs['APIRequest']:
+                    if req['Type'] == 'VirusTotal':
+                        for ioc in req['Entities']:
+                            vtdata.append(self.VTLookup.query(ioc, entity_type=req['EntityType'].lower()))
+                    else:
+                        vtdata = "Lookup Not available Yet."
+                return self.format_with_nemo(vtdata, query)
         else:
-            return "This query doesn't require a VirusTotal check. Please ask another question."
+            return self.MistralAgent(query)
     def spinner(self, stop_spinner):
         for cursor in itertools.cycle(['|', '/', '-', '\\']):
             if stop_spinner.is_set():
@@ -114,7 +108,7 @@ class CybSecuAI:
 class CyberAssistantAI(cmd.Cmd):
     CySecuAIfn = CybSecuAI()
     os.system('cls')
-    prompt = f"{Fore.GREEN}CyberAssistantAI>{Style.RESET_ALL}"
+    prompt = f"{Fore.GREEN}Secu-AI>{Style.RESET_ALL}"
     intro = f"{Fore.CYAN}Welcome to Gurmukh Cyber Assistant AI CLI! Type your query to get the help.{Style.RESET_ALL}"
     def __init__(self):
         super().__init__()
@@ -124,7 +118,7 @@ class CyberAssistantAI(cmd.Cmd):
         self.console.print(Markdown(response))
     def do_exit(self, arg):
         """Exit the CyberAssistant CLI."""
-        print("Exiting the application. Goodbye!")
+        print("Exiting the Secu-AI. Goodbye!")
         return True
     do_quit = do_exit
     do_EOF = do_exit
