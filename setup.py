@@ -1,3 +1,12 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="SecuAI",
+    version="1.0",
+    author="Gurmukhnishan Singh",
+    author_email="gurmukhnishansingh@gmail.com",
+    description="Secu-AI is a AI Cybersecurity Assistant for making SOC analyst life easy.",
+    long_description="""
 # Secu-AI: AI-Powered Cybersecurity Assistant (Interactive Terminal)
 
 Secu-AI is an open-source, AI-powered cybersecurity assistant that provides an interactive terminal interface for users to query and analyze threat intelligence data. By leveraging the power of AI and integrating with popular cybersecurity tools and services, Secu-AI offers a user-friendly platform for threat intelligence, analysis, and response.
@@ -68,3 +77,26 @@ Secu-AI is licensed under the MIT License. See the [LICENSE](LICENSE) file for m
 ---
 
 Secu-AI is an open-source project designed to help security professionals and IT administrators enhance their cybersecurity capabilities. By providing an interactive terminal interface, Secu-AI offers a user-friendly platform for querying and analyzing threat intelligence data, enabling users to quickly and easily gain insights into potential threats.
+
+""",
+    long_description_content_type="text/markdown",
+    url="https://github.com/GNishanSingh/Secu-AI",
+    packages=[
+        "SecuAI",
+        "SecuAI.Enricher"
+    ],
+    python_requires=">=3.6",
+    install_requires=[
+        'requests',
+        'python-dotenv',
+        "mistralai"
+    ],
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+    entry_points={
+        "console_scripts": ['Secu-AI=SecuAI.__main__:main']
+    },
+)
