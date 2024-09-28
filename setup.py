@@ -36,11 +36,11 @@ Secu-AI is an open-source, AI-powered cybersecurity assistant that provides an i
 2. **Configure your Mistral AI API token**: Set the `MISTRAL_API_KEY` environment variable to your Mistral AI API token. You can do this by adding the following line to your shell's configuration file (e.g., `~/.bashrc` or `~/.zshrc`):
 
    ```bash
-   export MISTRAL_API_KEY=your_mistral_ai_api_token_here
+   export MistralToken=your_mistral_ai_api_token_here
    ```
 3. **Set the VirusTotal API key**: Open your shell's configuration file (e.g., ~/.bashrc or ~/.zshrc) and add the following line, replacing <your_virustotal_api_key> with your actual API key:
     ```bash
-    export VIRUSTOTAL_API_KEY=<your_virustotal_api_key>
+    export VirusTotal_Token=<your_virustotal_api_key>
     ```
 4. **Verify the installation**: Run the following command to verify that Secu-AI is installed correctly:
    ```bash
@@ -77,7 +77,6 @@ Secu-AI is licensed under the MIT License. See the [LICENSE](LICENSE) file for m
 ---
 
 Secu-AI is an open-source project designed to help security professionals and IT administrators enhance their cybersecurity capabilities. By providing an interactive terminal interface, Secu-AI offers a user-friendly platform for querying and analyzing threat intelligence data, enabling users to quickly and easily gain insights into potential threats.
-
 """,
     long_description_content_type="text/markdown",
     url="https://github.com/GNishanSingh/Secu-AI",
