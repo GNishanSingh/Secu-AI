@@ -22,7 +22,7 @@ Secu-AI is an open-source, AI-powered cybersecurity assistant that provides an i
 1. **Install Secu-AI using pip**:
 
    ```bash
-   pip install Secu-AI
+   pip install https://github.com/GNishanSingh/Secu-AI/releases/download/Secu-AI_1.0/SecuAI-1.0-py3-none-any.whl
    ```
 2. **Configure your Mistral AI API token**: Set the `MISTRAL_API_KEY` environment variable to your Mistral AI API token. You can do this by adding the following line to your shell's configuration file (e.g., `~/.bashrc` or `~/.zshrc`):
 
