@@ -10,8 +10,8 @@ import os
 import colorama
 from colorama import Fore, Style
 from rich.console import Console
+from rich import print
 from rich.markdown import Markdown
-import whois.whois
 from SecuAI.Enricher.VirusTotal import VirusTotal
 from SecuAI.Enricher.AlienVault import AlienVaultOTX
 from SecuAI.Enricher.URLScan import URLScan
@@ -127,10 +127,10 @@ class CyberAssistantAI(cmd.Cmd):
     intro = f"{Fore.CYAN}Welcome to Gurmukh Cyber Assistant AI CLI! Type your query to get the help.{Style.RESET_ALL}"
     def __init__(self):
         super().__init__()
-        self.console = Console()
+        self.console = Console(width=100)
     def default(self, query):
         response = self.CySecuAIfn.process_query_with_spinner(query)
-        self.console.print(Markdown(response))
+        self.console.print(Markdown(response, code_theme="manni"))
     def do_exit(self, arg):
         """Exit the CyberAssistant CLI."""
         print("Exiting the Secu-AI. Goodbye!")
