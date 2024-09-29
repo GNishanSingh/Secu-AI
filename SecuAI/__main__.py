@@ -15,6 +15,7 @@ from rich.markdown import Markdown
 from SecuAI.Enricher.VirusTotal import VirusTotal
 from SecuAI.Enricher.AlienVault import AlienVaultOTX
 from SecuAI.Enricher.URLScan import URLScan
+from SecuAI.Enricher.WindowsData import WindowsLogs
 import whois
 from dotenv import load_dotenv
 
@@ -25,6 +26,8 @@ class CybSecuAI:
         self.VTLookup = VirusTotal(os.getenv('VirusTotal_Token'))
         self.AlienVault = AlienVaultOTX(os.getenv('AlienVault_OtxToken'))
         self.URLScan = URLScan(os.getenv('urlscan_token'))
+        self.windowsLogs = WindowsLogs()
+
     def MistralAgent (self, data):
         MistralToken = os.getenv("MistralToken")
         MistralAgent = os.getenv("MistralAgent")
@@ -41,7 +44,8 @@ class CybSecuAI:
         return chat_response.choices[0].message.content
     def use_nemo_for_decision(self, query):
         prompt = f"""
-Check if User is requesting for any kind of API request. it might also contains IP, hash, domain, url, email, etc. extract what kind of API request user asking and provide answer only in following json format
+Check if User is requesting for any kind of API request. it might also contains IP, hash, domain, url, email, etc. 
+Extract what kind of API request user asking and provide answer only in following json format
 {{
     'IsAPIRequest':true,
     'APIRequest':[
@@ -53,6 +57,14 @@ Check if User is requesting for any kind of API request. it might also contains 
         ]
 }}
 
+User can also ask for Windows Events log search if user requesting for that provide the response as below json format only:
+{{
+"IsAPIRequest": false,
+"LogSearch": true,
+"LogName": 'Security',
+"Event Filter":"here provide full windows xml event filter"
+}}
+
 User Query: {query}
             
             """
@@ -61,21 +73,10 @@ User Query: {query}
                return json.loads(response.replace('```json','').replace('```','').strip())
         except:
                 return {'IsAPIRequest': False}
-    def format_with_nemo(self, data, userquery):
-        if "error" in data:
-            return data["error"]
-        else:
-            prompt = f"""
-    User asked for API data we got the data now user have query on that data. please complete user request.
-    # API Data
-    {data}
-    # Question from user
-    {userquery}
-            """
-            outputs = self.MistralAgent(prompt)
-            return outputs
+    def format_with_nemo(self, prompt):
+        outputs = self.MistralAgent(prompt)
+        return outputs
     def process_query(self, query):
-        # entities = self.extract_entities(query)
         decs = self.use_nemo_for_decision(query)
         if decs['IsAPIRequest']:
                 data = []
@@ -94,9 +95,25 @@ User Query: {query}
                             data.append(self.URLScan.query(ioc,req['EntityType'].lower()))
                     else:
                         data = "Lookup Not available Yet."
-                return self.format_with_nemo(data, query)
+                return self.format_with_nemo(f"""
+    User asked for API data we got the data now user have query on that data. please complete user request.
+    # API Data
+    {data}
+    # Question from user
+    {query}
+            """)
         else:
-            return self.MistralAgent(query)
+            if decs['LogSearch']:
+                data = self.windowsLogs.query_event_log(decs['LogName'],decs['Event Filter'])
+                return self.format_with_nemo(f"""
+    User asked for windows event data we got the data now user have query on that data. please complete user request.
+    # API Data
+    {data[1:10]}
+    # Question from user
+    {query}
+            """)
+            else:
+                return self.MistralAgent(query)
     def spinner(self, stop_spinner):
         for cursor in itertools.cycle(['|', '/', '-', '\\']):
             if stop_spinner.is_set():
@@ -127,7 +144,7 @@ class CyberAssistantAI(cmd.Cmd):
     intro = f"{Fore.CYAN}Welcome to Gurmukh Cyber Assistant AI CLI! Type your query to get the help.{Style.RESET_ALL}"
     def __init__(self):
         super().__init__()
-        self.console = Console(width=100)
+        self.console = Console(width=300)
     def default(self, query):
         response = self.CySecuAIfn.process_query_with_spinner(query)
         self.console.print(Markdown(response, code_theme="manni"))
