@@ -1,0 +1,44 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "CheckVirusTotal",
+            "description": "Get virustotal report for IP, hash, URL, domain and email",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "entity": {
+                        "type": "string",
+                        "description": "Value of IP or hash or url or domain or email"
+                    },
+                    "entity_type":{
+                        "type": "string",
+                        "description": "type of entity it might be IP or hash or url or domain or email"
+                    }
+                },
+                "required": ["entity","entity_type"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "QueryLogs",
+            "description": "Get Windows Logs using Event Filter",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "LogName": {
+                        "type": "string",
+                        "description": "LogName in which logs will be available"
+                    },
+                    "xml_filter":{
+                        "type": "string",
+                        "description": "Windows Event filter xml used for filtering windows logs"
+                    }
+                },
+                "required": ["LogName","xml_filter"]
+            }
+        }
+    }
+]

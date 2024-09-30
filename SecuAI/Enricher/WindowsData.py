@@ -55,8 +55,8 @@ class WindowsLogs:
                 parsed = element.text
             return parsed
         return {root.tag: parse_element(root)}
-    def query_event_log(self, LogName ,xml_filter):
-        event_log_handle = self.EvtQuery(None, LogName, xml_filter, self.EVT_QUERY_FLAGS_FORWARD)
+    def query_event_log(self, params):
+        event_log_handle = self.EvtQuery(None, params['LogName'], params['xml_filter'], self.EVT_QUERY_FLAGS_FORWARD)
         if not event_log_handle:
             raise ctypes.WinError()
         event_handles = (self.EVT_HANDLE * 1)()
