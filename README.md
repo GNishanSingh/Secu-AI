@@ -56,6 +56,11 @@ You will be presented with a prompt to enter your query. Here are some examples 
   ```
 
 Secu-AI will provide relevant and accurate responses based on your input, allowing you to quickly and easily query threat intelligence data and gain insights into potential threats.
+### Demo
+**How to make SOC analyst life for getting the Logs from Machine or SIEM Solution using Secu-AI**
+[![How to Get Windows Logs](./demo/Secu-AI.png)](./demo/Getting%20Windows%20Logs%20using%20AI.mp4)
+**How to triage or doing threat hunting easier using Secu-AI**
+[![Threat Hunting](./demo/Secu-AI.png)](./demo/Incident%20Response%20and%20Hunting%20using%20Secu-AI%20-%20Made%20with%20Clipchamp.mp4)
 
 ## Contributing
 
