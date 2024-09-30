@@ -17,6 +17,7 @@ from SecuAI.Enricher.AlienVault import AlienVaultOTX
 from SecuAI.Enricher.URLScan import URLScan
 from SecuAI.Enricher.WindowsData import WindowsLogs
 import whois
+from rich.progress import SpinnerColumn, Progress
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -62,7 +63,7 @@ User can also ask for Windows Events log search if user requesting for that prov
 "IsAPIRequest": false,
 "LogSearch": true,
 "LogName": 'Security',
-"Event Filter":"here provide full windows xml event filter"
+"EventFilter":"here provide full windows xml event filter"
 }}
 
 User Query: {query}
@@ -72,7 +73,7 @@ User Query: {query}
         try:
                return json.loads(response.replace('```json','').replace('```','').strip())
         except:
-                return {'IsAPIRequest': False}
+                return {'IsAPIRequest': False,'LogSearch':False}
     def format_with_nemo(self, prompt):
         outputs = self.MistralAgent(prompt)
         return outputs
@@ -104,44 +105,44 @@ User Query: {query}
             """)
         else:
             if decs['LogSearch']:
-                data = self.windowsLogs.query_event_log(decs['LogName'],decs['Event Filter'])
+                data = self.windowsLogs.query_event_log(decs['LogName'],decs['EventFilter'])
                 return self.format_with_nemo(f"""
-    User asked for windows event data we got the data now user have query on that data. please complete user request.
-    # API Data
-    {data[1:10]}
-    # Question from user
-    {query}
+User asked for windows event data we got the data now user have query on that data. please complete user request, in case we dont see the data below just mention that in response too
+API Data: {data[1:10]}
+User query: {query}
             """)
             else:
                 return self.MistralAgent(query)
-    def spinner(self, stop_spinner):
-        for cursor in itertools.cycle(['|', '/', '-', '\\']):
-            if stop_spinner.is_set():
-                break
-            sys.stdout.write(f'\rAnalysing {cursor}')
-            sys.stdout.flush()
-            time.sleep(0.1)
-        sys.stdout.write('\rDone!       \n')
-        sys.stdout.flush()
 
     def process_query_with_spinner(self, query):
-        stop_spinner = threading.Event()
-        spinner_thread = threading.Thread(target=self.spinner, args=(stop_spinner,))
-        spinner_thread.start()
-        try:
-            response = self.process_query(query)
-        finally:
-            spinner_thread.do_run = False
-            stop_spinner.set()
-            sys.stdout.flush()
-            spinner_thread.join()
+        with Progress(SpinnerColumn(),transient=True) as progress:
+            task = progress.add_task("[cyan]Analyzing...",total=None)
+            try:
+                response = self.process_query(query)
+            finally:
+                sys.stdout.flush()
+            progress.stop_task(task)
         return response
 
 class CyberAssistantAI(cmd.Cmd):
     CySecuAIfn = CybSecuAI()
     os.system('cls')
     prompt = f"{Fore.GREEN}Secu-AI>{Style.RESET_ALL}"
-    intro = f"{Fore.CYAN}Welcome to Gurmukh Cyber Assistant AI CLI! Type your query to get the help.{Style.RESET_ALL}"
+    intro = f"""
+{Fore.CYAN}
+
+███████╗███████╗ ██████╗██╗   ██╗       █████╗ ██╗
+██╔════╝██╔════╝██╔════╝██║   ██║      ██╔══██╗██║
+███████╗█████╗  ██║     ██║   ██║█████╗███████║██║
+╚════██║██╔══╝  ██║     ██║   ██║╚════╝██╔══██║██║
+███████║███████╗╚██████╗╚██████╔╝      ██║  ██║██║
+╚══════╝╚══════╝ ╚═════╝ ╚═════╝       ╚═╝  ╚═╝╚═╝
+{Style.RESET_ALL}
+{Fore.BLUE}Version{Style.RESET_ALL}     : v1.3
+{Fore.BLUE}Description{Style.RESET_ALL} : Cybersecurity AI assistant for making SOC analyst life easier.
+{Fore.BLUE}Author{Style.RESET_ALL}      : Gurmukhnishan Singh
+{Fore.BLUE}Email{Style.RESET_ALL}       : gurmukhnishansingh@gmail.com
+    """
     def __init__(self):
         super().__init__()
         self.console = Console(width=300)
@@ -149,7 +150,7 @@ class CyberAssistantAI(cmd.Cmd):
         response = self.CySecuAIfn.process_query_with_spinner(query)
         self.console.print(Markdown(response, code_theme="manni"))
     def do_exit(self, arg):
-        """Exit the CyberAssistant CLI."""
+        """Exit the Secu-AI."""
         print("Exiting the Secu-AI. Goodbye!")
         return True
     do_quit = do_exit

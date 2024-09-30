@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="SecuAI",
-    version="1.1",
+    version="1.3",
     author="Gurmukhnishan Singh",
     author_email="gurmukhnishansingh@gmail.com",
     description="Secu-AI is a AI Cybersecurity Assistant for making SOC analyst life easy.",
