@@ -2,7 +2,7 @@ from SecuAI.Enricher.VirusTotal import VirusTotal
 from SecuAI.Enricher.WindowsData import WindowsLogs
 from SecuAI.Enricher.AlienVault import AlienVaultOTX
 from SecuAI.Enricher.URLScan import URLScan
-from SecuAI.Enricher.WhoIsLookup import WhoIsLookup
+from SecuAI.Enricher.WhoisLookup import WhoIsLookup
 import os, json
 from dotenv import load_dotenv
 import functools
