@@ -18,13 +18,13 @@ colorama.init(autoreset=True)
 class CybSecuAI:
     def __init__(self) -> None:
         MistralToken = os.getenv("MistralToken")
-        self.MistralAgent = os.getenv("MistralAgent")
+        self.MistralAgentstring = os.getenv("MistralAgent")
         self.client = Mistral(api_key=MistralToken)
         self.tools = MistralToolAI(self.client)
         self.checkrequest = IsAPIRequest()
     def MistralAgent (self, data):
         chat_response = self.client.agents.complete(
-            agent_id = self.MistralAgent,
+            agent_id = self.MistralAgentstring,
             messages = [
                 {
                     "role": "user",
