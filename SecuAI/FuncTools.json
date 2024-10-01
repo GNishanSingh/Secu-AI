@@ -40,5 +40,64 @@
                 "required": ["LogName","xml_filter"]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "AlientVault",
+            "description": "Get alienvault data for ip, hash, domain, email and url",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "entity": {
+                        "type": "string",
+                        "description": "Value of IP or hash or url or domain or email"
+                    },
+                    "entity_type":{
+                        "type": "string",
+                        "description": "type of entity it might be IP or hash or url or domain or email"
+                    }
+                },
+                "required": ["entity","entity_type"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "URLScan",
+            "description": "Get URLScan data for ip, hash, domain, email and url",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "entity": {
+                        "type": "string",
+                        "description": "Value of IP or hash or url or domain or email"
+                    },
+                    "entity_type":{
+                        "type": "string",
+                        "description": "type of entity it might be IP or hash or url or domain or email"
+                    }
+                },
+                "required": ["entity","entity_type"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "Whois",
+            "description": "Get whois lookup data for domain",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "domain": {
+                        "type": "string",
+                        "description": "Value domain for which registration data required."
+                    }
+                },
+                "required": ["domain"]
+            }
+        }
     }
 ]

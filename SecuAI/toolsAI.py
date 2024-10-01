@@ -2,7 +2,7 @@ from SecuAI.Enricher.VirusTotal import VirusTotal
 from SecuAI.Enricher.WindowsData import WindowsLogs
 from SecuAI.Enricher.AlienVault import AlienVaultOTX
 from SecuAI.Enricher.URLScan import URLScan
-import whois
+from SecuAI.Enricher.WhoIsLookup import WhoIsLookup
 import os, json
 from dotenv import load_dotenv
 import functools
@@ -15,9 +15,13 @@ class MistralToolAI:
         self.URLScan = URLScan(os.getenv('urlscan_token'))
         self.vtlookup = VirusTotal(os.getenv("VirusTotal_Token"))
         self.QueryLogs = WindowsLogs()
+        self.whoisquery = WhoIsLookup()
         self.nametofunction = {
                 'CheckVirusTotal': functools.partial(self.vtlookup.query),
-                'QueryLogs': functools.partial(self.QueryLogs.query_event_log)
+                'QueryLogs': functools.partial(self.QueryLogs.query_event_log),
+                'AlienVault':functools.partial(self.AlienVault.query),
+                'URLScan':functools.partial(self.URLScan.query),
+                'WhoIs': functools.partial(self.whoisquery.query)
         }
         with open(os.path.join(self.script_dir,'FuncTools.json'), mode='r') as f:
             self.cybtools = json.load(f)
