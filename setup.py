@@ -86,7 +86,7 @@ Secu-AI is an open-source project designed to help security professionals and IT
     package_data={
         '': ['FuncTools.json','TriggeredList.json']
     },
-    python_requires=">=3.6",
+    python_requires=">=3.10",
     install_requires=[
         "requests",
         "python-dotenv",
