@@ -70,6 +70,10 @@ class CyberAssistantAI(cmd.Cmd):
 {Fore.BLUE}Author{Style.RESET_ALL}          : {pkgmeta['author']}
 {Fore.BLUE}Email{Style.RESET_ALL}           : {pkgmeta['author-email']}
 {Fore.BLUE}Documentation{Style.RESET_ALL}   : {pkgmeta['Home-page']}
+{Fore.BLUE}Requirements{Style.RESET_ALL}    : {f"{Fore.GREEN}✔{Style.RESET_ALL}  Mistral AI Token" if os.getenv('MistralAgent') is not None else f"{Fore.RED}❌{Style.RESET_ALL} Mistral AI Token"}
+                : {f"{Fore.GREEN}✔{Style.RESET_ALL}  VirusTotal Token" if os.getenv('VirusTotal_Token') is not None else f"{Fore.RED}❌{Style.RESET_ALL} VirusTotal Token"}
+                : {f"{Fore.GREEN}✔{Style.RESET_ALL}  AlienVault Token" if os.getenv('AlienVault_OtxToken') is not None else f"{Fore.RED}❌{Style.RESET_ALL} AlienVault Token"}
+                : {f"{Fore.GREEN}✔{Style.RESET_ALL}  URLScan Token" if os.getenv('urlscan_token') is not None else f"{Fore.RED}❌{Style.RESET_ALL} URLScan Token"}
     """
     def __init__(self):
         super().__init__()
