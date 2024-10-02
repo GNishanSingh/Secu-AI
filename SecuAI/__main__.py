@@ -65,11 +65,11 @@ class CyberAssistantAI(cmd.Cmd):
 ███████║███████╗╚██████╗╚██████╔╝      ██║  ██║██║
 ╚══════╝╚══════╝ ╚═════╝ ╚═════╝       ╚═╝  ╚═╝╚═╝
 {Style.RESET_ALL}
-{Fore.BLUE}Version{Style.RESET_ALL}     : {'v'+pkgmeta['version']}
-{Fore.BLUE}Description{Style.RESET_ALL} : {pkgmeta['summary']}
-{Fore.BLUE}Author{Style.RESET_ALL}      : {pkgmeta['author']}
-{Fore.BLUE}Email{Style.RESET_ALL}       : {pkgmeta['author-email']}
-{Fore.BLUE}Documentation{Style.RESET_ALL}       : {pkgmeta['Home-page']}
+{Fore.BLUE}Version{Style.RESET_ALL}         : {'v'+pkgmeta['version']}
+{Fore.BLUE}Description{Style.RESET_ALL}     : {pkgmeta['summary']}
+{Fore.BLUE}Author{Style.RESET_ALL}          : {pkgmeta['author']}
+{Fore.BLUE}Email{Style.RESET_ALL}           : {pkgmeta['author-email']}
+{Fore.BLUE}Documentation{Style.RESET_ALL}   : {pkgmeta['Home-page']}
     """
     def __init__(self):
         super().__init__()
