@@ -95,8 +95,7 @@ Secu-AI is an open-source project designed to help security professionals and IT
         "rich",
         "colorama",
         "sentence_transformers",
-        "torch",
-        "functools"
+        "torch"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
