@@ -8,6 +8,7 @@ from colorama import Fore, Style
 from rich.console import Console
 from rich import print
 from rich.markdown import Markdown
+from rich.panel import Panel
 from rich.progress import SpinnerColumn, Progress
 from dotenv import load_dotenv
 from SecuAI.SimilarityModule import IsAPIRequest
@@ -28,7 +29,7 @@ class CybSecuAI:
             messages = [
                 {
                     "role": "user",
-                    "content": json.dumps(data),
+                    "content": json.dumps(data,default=str),
                 },
             ]
         )
@@ -70,10 +71,24 @@ class CyberAssistantAI(cmd.Cmd):
     """
     def __init__(self):
         super().__init__()
-        self.console = Console(width=300)
+        self.console = Console(width=200)
     def default(self, query):
         response = self.CySecuAIfn.process_query_with_spinner(query)
-        self.console.print(Markdown(response, code_theme="manni"))
+        panel = Panel(Markdown(response, code_theme="monokai"), title="Secu-AI Response", title_align="left")
+        self.console.print(panel)
+    def do_addtriggers(self,arg):
+        """Add trigger question for running tools"""
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'TriggeredList.json'), mode='r') as f:
+            cybersecurity_enrichment_triggers = json.load(f)
+            f.close()
+        cybersecurity_enrichment_triggers.append(arg)
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'TriggeredList.json'), mode='w') as f:
+            json.dump(cybersecurity_enrichment_triggers,f)
+            f.close()
+        print("Added question in triggered list.")
+    def do_clear(self, arg):
+        """Clear the screen"""
+        os.system('cls')
     def do_exit(self, arg):
         """Exit the Secu-AI."""
         print("Exiting the Secu-AI. Goodbye!")

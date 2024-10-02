@@ -86,7 +86,7 @@
     {
         "type": "function",
         "function": {
-            "name": "Whois",
+            "name": "WhoIs",
             "description": "Get whois lookup data for domain",
             "parameters": {
                 "type": "object",

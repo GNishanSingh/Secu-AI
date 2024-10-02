@@ -34,7 +34,7 @@ class MistralToolAI:
                 messages = [
                     {
                         "role": "user",
-                        "content": json.dumps(data),
+                        "content": json.dumps(data,default=str),
                     },
                 ],
                 tools=self.cybtools,
@@ -46,7 +46,7 @@ class MistralToolAI:
                      {
                           "role":"user",
                           "name":resp.function.name,
-                          "content":f"User Query:{data}\n\nFunctionData:"+'\n\n'+json.dumps(self.nametofunction[resp.function.name](json.loads(resp.function.arguments))),
+                          "content":f"User Query:{data}\n\nFunctionData:"+'\n\n'+json.dumps(self.nametofunction[resp.function.name](json.loads(resp.function.arguments)),default=str),
                           "tool_call_id":resp.id
                      }
                 )
