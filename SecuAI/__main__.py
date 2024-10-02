@@ -13,6 +13,7 @@ from rich.progress import SpinnerColumn, Progress
 from dotenv import load_dotenv
 from SecuAI.SimilarityModule import IsAPIRequest
 from SecuAI.toolsAI import MistralToolAI
+import importlib.metadata
 
 load_dotenv()
 colorama.init(autoreset=True)
@@ -41,7 +42,7 @@ class CybSecuAI:
         else:
             return self.MistralAgent(query)
     def process_query_with_spinner(self, query):
-        with Progress(SpinnerColumn(),transient=True) as progress:
+        with Progress(SpinnerColumn(),transient=True,) as progress:
             task = progress.add_task("[cyan]Analyzing...",total=None)
             try:
                 response = self.process_query(query)
@@ -49,9 +50,9 @@ class CybSecuAI:
                 sys.stdout.flush()
             progress.stop_task(task)
         return response
-
 class CyberAssistantAI(cmd.Cmd):
     CySecuAIfn = CybSecuAI()
+    pkgmeta = importlib.metadata.metadata("SecuAI")
     os.system('cls')
     prompt = f"{Fore.GREEN}Secu-AI>{Style.RESET_ALL}"
     intro = f"""
@@ -64,10 +65,10 @@ class CyberAssistantAI(cmd.Cmd):
 ███████║███████╗╚██████╗╚██████╔╝      ██║  ██║██║
 ╚══════╝╚══════╝ ╚═════╝ ╚═════╝       ╚═╝  ╚═╝╚═╝
 {Style.RESET_ALL}
-{Fore.BLUE}Version{Style.RESET_ALL}     : v1.3
-{Fore.BLUE}Description{Style.RESET_ALL} : Cybersecurity AI assistant for making SOC analyst life easier.
-{Fore.BLUE}Author{Style.RESET_ALL}      : Gurmukhnishan Singh
-{Fore.BLUE}Email{Style.RESET_ALL}       : gurmukhnishansingh@gmail.com
+{Fore.BLUE}Version{Style.RESET_ALL}     : {'v'+pkgmeta['version']}
+{Fore.BLUE}Description{Style.RESET_ALL} : {pkgmeta['summary']}
+{Fore.BLUE}Author{Style.RESET_ALL}      : {pkgmeta['author']}
+{Fore.BLUE}Email{Style.RESET_ALL}       : {pkgmeta['author-email']}
     """
     def __init__(self):
         super().__init__()
