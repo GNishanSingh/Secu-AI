@@ -34,7 +34,7 @@
                     },
                     "xml_filter":{
                         "type": "string",
-                        "description": "Windows Event filter xml used for filtering windows logs"
+                        "description": "Full Windows Event filter xml used for filtering windows logs start from QueryList"
                     }
                 },
                 "required": ["LogName","xml_filter"]
