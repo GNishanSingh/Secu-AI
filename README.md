@@ -18,7 +18,7 @@ Secu-AI is an open-source, AI-powered cybersecurity assistant that provides an i
 - **AI Model Integration**: Integrate custom AI models and machine learning algorithms to extend the capabilities of Secu-AI and tailor it to your organization's specific needs.
 
 
-### Demo
+## Demo
 - **How to make SOC analyst life for getting the Logs from Machine or SIEM Solution using Secu-AI**
 [![How to Get Windows Logs](./demo/Secu-AI.png)](https://youtu.be/36uMH4bVQUE)
 - **How to triage / threat hunting using Secu-AI**
