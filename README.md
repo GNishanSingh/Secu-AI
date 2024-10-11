@@ -17,49 +17,11 @@ Secu-AI is an open-source, AI-powered cybersecurity assistant that provides an i
 - **Natural Language Processing (NLP)**: Secu-AI uses advanced NLP techniques to understand and interpret user queries, providing relevant and accurate responses to cybersecurity-related questions.
 - **AI Model Integration**: Integrate custom AI models and machine learning algorithms to extend the capabilities of Secu-AI and tailor it to your organization's specific needs.
 
-## Installation
 
-1. **Install Secu-AI using pip**:
-
-   ```bash
-   pip install https://github.com/GNishanSingh/Secu-AI/releases/download/Secu-AI_1.0/SecuAI-1.0-py3-none-any.whl
-   ```
-2. **Configure your Mistral AI API token**: Set the `MISTRAL_API_KEY` environment variable to your Mistral AI API token. You can do this by adding the following line to your shell's configuration file (e.g., `~/.bashrc` or `~/.zshrc`):
-
-   ```bash
-   export MistralToken=your_mistral_ai_api_token_here
-   ```
-3. **Set the VirusTotal API key**: Open your shell's configuration file (e.g., ~/.bashrc or ~/.zshrc) and add the following line, replacing <your_virustotal_api_key> with your actual API key:
-    ```bash
-    export VirusTotal_Token=<your_virustotal_api_key>
-    ```
-4. **Verify the installation**: Run the following command to verify that Secu-AI is installed correctly:
-   ```bash
-   secu-ai
-   ```
-
-   This should start the interactive CLI for Secu-AI.
-
-## Usage
-
-Secu-AI provides an interactive terminal interface for users to query and analyze threat intelligence data. To get started, simply run the following command:
-```bash
-secu-ai
-```
-
-You will be presented with a prompt to enter your query. Here are some examples of how to use Secu-AI:
-
-- **VirusTotal Lookup**: Enter `virustotal <target> [file|url|domain|ip]` followed by the file path, URL, domain, or IP address you want to look up. For example:
-
-  ```
-  check what does virustotal says about <your IOC (ip, url, hash, etc)>
-  ```
-
-Secu-AI will provide relevant and accurate responses based on your input, allowing you to quickly and easily query threat intelligence data and gain insights into potential threats.
 ### Demo
 **How to make SOC analyst life for getting the Logs from Machine or SIEM Solution using Secu-AI**
-[![How to Get Windows Logs](./demo/Secu-AI.png)](https://youtu.be/36uMH4bVQUE)
-**How to triage or doing threat hunting easier using Secu-AI**
+[![How to Get Windows Logs](./demo/Secu-AI.png)](https://youtu.be/36uMH4bVQUE)<br>
+**How to \ using Secu-AI**
 [![Threat Hunting](./demo/Secu-AI.png)](https://youtu.be/ywZRCCw9OwU)
 
 ## Contributing
