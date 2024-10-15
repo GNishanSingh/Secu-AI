@@ -7,9 +7,9 @@ Secu-AI is an open-source, AI-powered cybersecurity assistant that provides an i
 ### 🔍 **Threat Intelligence and Analysis**
 
 - **VirusTotal Lookup**: Perform real-time VirusTotal lookups to check the reputation of files, URLs, domains, and IP addresses. Secu-AI integrates with the VirusTotal API to provide up-to-date and accurate threat intelligence data.
-#### **Future Feature for Threat Intelligence**
 - **AlienVault OTX Integration**: Correlate threat intelligence data with AlienVault's Open Threat Exchange (OTX) to gain insights into global threat activity and identify potential threats targeting your organization.
 - **Whois Lookup**: Perform WhoIs lookups to gather information about the ownership and registration details of domains and IP addresses, helping you to identify suspicious or malicious activity.
+#### **Future Feature for Threat Intelligence**
 - **Phishing Analysis**: Analyze URLs and emails to detect phishing attempts and other social engineering attacks. Secu-AI uses machine learning algorithms and AI models to identify and classify potential phishing threats.
 - **Log Correlation**: Analyze and correlate logs from various security tools and systems to identify patterns, anomalies, and potential threats that may have been missed by individual tools.
 ### 💡 **AI-Driven Insights and Recommendations**
